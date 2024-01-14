@@ -2,7 +2,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-
 public class Main {
     public static void main(String[] args) {
         List<String> names = Arrays.asList("Jack", "Connor", "Harry", "George", "Samuel", "John");
@@ -19,26 +18,28 @@ public class Main {
             );
         }
 
-        // Задание 1
         long underageCount = persons.stream()
                 .filter(person -> person.getAge() < 18)
                 .count();
         System.out.println("Количество несовершеннолетних: " + underageCount);
 
-        // Задание 2
+// Задание 2
         List<String> conscriptSurnames = persons.stream()
                 .filter(person -> person.getSex() == Sex.MAN && person.getAge() >= 18 && person.getAge() <= 27)
                 .map(Person::getFamily)
                 .collect(Collectors.toList());
+
         System.out.println("Список фамилий призывников: " + conscriptSurnames);
 
-        // Задание 3
-        List<Person> potentialWorkers = persons.stream()
-                .filter(person -> person.getEducation() == Education.HIGHER &&
-                        ((person.getSex() == Sex.WOMAN && person.getAge() >= 18 && person.getAge() <= 60) ||
-                                (person.getSex() == Sex.MAN && person.getAge() <= 65)))
+// Задание 3
+        List<String> potentialWorkers = persons.stream()
+                .filter(person -> (person.getSex() == Sex.WOMAN && person.getAge() >= 18 && person.getAge() <= 60) ||
+                        (person.getSex() == Sex.MAN && person.getAge() >= 18 && person.getAge() <= 65))
+                .filter(person -> person.getEducation() == Education.HIGHER)
                 .sorted(Comparator.comparing(Person::getFamily))
+                .map(Person::getFamily)
                 .collect(Collectors.toList());
+
         System.out.println("Отсортированный по фамилии список потенциально работоспособных людей: " + potentialWorkers);
     }
 }
